@@ -7,12 +7,16 @@ const app = express()
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+async function startDatabase() {
 const db = mysql.createConnection(
   {
     host: 'localhost',
     user: 'root',
     password: 'password',
-    database: 'books_db'
+    database: 'dompany_db'
   },
-  console.log(`Connected to the books_db database.`)
+  
 );
+// try to connect and if successful then log success await connection.connect ();
+console. log ('Connected to the classlist db database.');
+}

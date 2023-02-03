@@ -42,7 +42,7 @@ class Role {
   }
 
   async addRole(title, salary, department) {
-    const addRoleValues = [title, salary, department];
+    const addRoleValues = [title, Number(salary), Number(department)];
     const addRoleQuery = `INSERT INTO role 
                             (title, salary, department_id) 
                           VALUES

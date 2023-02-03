@@ -50,26 +50,28 @@ function mainMenu() {
             "salary",
             "department",
           ]);
-          role.addRole(response);
+          role.addRole(...response);
           // console.log(response);
           break;
         case "Add an Employee":
-          response = await buildResponse("enter", "employee", [
+          const tempName = await buildResponse("enter", "employee", [
             "first name",
-            "last name",
-            "role",
-            "manager",
+            "last name",])
+            const tempRole = await buildResponse("select", "role", ["title"])
+            const tempMan = await buildResponse("select", "manager", ["name",
           ]);
-          employee.addEmployee(response);
+          console.log("tn", tempName)
+          console.log("td", tempRole)
+          console.log("tm", tempMan)
+          // employee.addEmployee(...tempName, ...tempData);
           // console.log(response);
           break;
         case "Update an Employee Role":
           const resName = await buildResponse("select", "employee", ["name"]);
           const resRole = await buildResponse("select", "role", ["title"]);
-          const fnArr= resName[0].split(' ')
-          console.log(fnArr[0])
-          console.log("BACK", resName, resRole);
-          employee.updateEmployeeRole(resRole, fnArr[0]);
+         console.log("resRole", resRole)
+          employee.updateEmployeeRole(resRole, resName);
+          employee.viewOne(resName)
           break;
         default:
           break;
@@ -92,8 +94,10 @@ async function buildResponse(method, table, column) {
     } else if (method === "select") {
       var promptArr = [];
       if (table === "employee") {
-        promptArr = await employee.viewNames();
-      } else if (table === "role") {
+        promptArr = await employee.viewEmployeeNames();
+      }  else if (table === "manager"){
+        promptArr = await employee.viewManagerNames();
+      }else if (table === "role") {
         promptArr = await role.viewTitles();
       }
       const { ans } = await inquirer.prompt([

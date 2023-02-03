@@ -78,8 +78,8 @@ class Employee {
                                   SET role_id = 
                                     (SELECT id 
                                       FROM role 
-                                        WHERE title = ?)
-                                    WHERE first_name = ?`;
+                                        WHERE title = (?))
+                                    WHERE first_name = (?)`;
 
     return new Promise((resolve, reject) => {
       this.connection.query(

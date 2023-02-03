@@ -45,7 +45,7 @@ function mainMenu() {
           department.addDepartment(response);
           break;
         case "Add a Role":
-          response = buildResponse("enter", "role", [
+          response = await buildResponse("enter", "role", [
             "name",
             "salary",
             "department",
@@ -54,13 +54,13 @@ function mainMenu() {
           // console.log(response);
           break;
         case "Add an Employee":
-          response = buildResponse("enter", "employee", [
+          response = await buildResponse("enter", "employee", [
             "first name",
             "last name",
             "role",
             "manager",
           ]);
-          emp.addEmployee(response);
+          employee.addEmployee(response);
           // console.log(response);
           break;
         case "Update an Employee Role":
@@ -81,7 +81,12 @@ async function buildResponse(method, table, column) {
   var outputArr = [];
   for (var i = 0; i < column.length; i++) {
     if (method === "enter") {
-      const { ans } = await enter(column[i], table);
+      const { ans } = await inquirer.prompt([
+        {
+          name: "ans",
+          message: `Enter the ${column[i]} of the ${table}`,
+        },
+      ]);
       console.log(ans);
       outputArr.push(ans);
     } else if (method === "select") {
@@ -91,7 +96,14 @@ async function buildResponse(method, table, column) {
       } else if (table === "role") {
         promptArr = await role.viewTitles();
       }
-      const { ans } = await select(column[i], table, promptArr);
+      const { ans } = await inquirer.prompt([
+        {
+          type: "list",
+          name: "ans",
+          message: `Select the ${column[i]} of the ${table}`,
+          choices: promptArr,
+        },
+      ]);
       console.log(ans);
       outputArr.push(ans);
     }
@@ -100,24 +112,27 @@ async function buildResponse(method, table, column) {
   return outputArr;
 }
 
-async function enter(column, table, promptArr) {
-  return await inquirer.prompt([
-    {
-      name: "ans",
-      message: `Enter the ${column} of the ${table}`,
-    },
-  ]);
-}
+// async function enter(column, table, promptArr) {
+//   console.log("Entered")
+//   const resp = await inquirer.prompt([
+//     {
+//       name: "ans",
+//       message: `Enter the ${column} of the ${table}`,
+//     },
+//   ]);
+//   console.log(resp)
+//   return resp
+// }
 
-async function select(column, table, promptArr) {
-  return await inquirer.prompt([
-    {
-      type: "list",
-      name: "ans",
-      message: `Select the ${column} of the ${table}`,
-      choices: promptArr,
-    },
-  ]);
-}
+// async function select(column, table, promptArr) {
+//   return await inquirer.prompt([
+//     {
+//       type: "list",
+//       name: "ans",
+//       message: `Select the ${column} of the ${table}`,
+//       choices: promptArr,
+//     },
+//   ]);
+// }
 
 module.exports = mainMenu;

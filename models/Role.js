@@ -46,10 +46,7 @@ class Role {
     const addRoleQuery = `INSERT INTO role 
                             (title, salary, department_id) 
                           VALUES
-                            ( ?, ?,
-                            (SELECT role.id 
-                              FROM role 
-                                WHERE role.name = ?))`;
+                            ((?), (?),(?))`;
 
     return new Promise((resolve, reject) => {
       this.connection.query(

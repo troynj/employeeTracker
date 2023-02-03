@@ -5,7 +5,7 @@ class Employee {
 
   async viewEmployeeNames() {
     const viewNamesQuery = {
-      sql: `SELECT CONCAT(first_name, ' ', last_Name) FROM employee`,
+      sql: `SELECT CONCAT(first_name, ' ', last_Name) FROM employee;`,
       rowsAsArray: true,
     };
     return new Promise((resolve, reject) => {
@@ -21,7 +21,7 @@ class Employee {
 
   async viewManagerNames() {
     const viewNamesQuery = {
-      sql: `SELECT CONCAT(first_name, ' ', last_Name) FROM employee WHERE manager_id == null`,
+      sql: `SELECT CONCAT(first_name, ' ', last_Name) FROM employee WHERE manager_id == null;`,
       rowsAsArray: true,
     };
     return new Promise((resolve, reject) => {
@@ -48,7 +48,7 @@ class Employee {
   JOIN role ON employee.role_id = role.id
   JOIN department ON role.department_id = department.id
   LEFT JOIN employee AS manager ON employee.manager_id = manager.id
-  WHERE CONCAT(employee.first_name, ' ', employee.last_name) = (?)`;
+  WHERE CONCAT(employee.first_name, ' ', employee.last_name) = (?);`;
     return new Promise((resolve, reject) => {
       this.connection.query(
         viewOneQuery,
@@ -124,7 +124,7 @@ class Employee {
                                     (SELECT id 
                                       FROM role 
                                         WHERE title = (?))
-                                    WHERE CONCAT(first_name, ' ', last_name) = (?)`;
+                                    WHERE CONCAT(first_name, ' ', last_name) = (?);`;
 
     return new Promise((resolve, reject) => {
       this.connection.query(

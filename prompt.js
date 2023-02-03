@@ -47,10 +47,10 @@ function mainMenu() {
         case "Add a Role":
           response = await buildResponse("enter", "role", [
             "name",
-            "salary",
-            "department",
-          ]);
-          role.addRole(...response);
+            "salary"]);
+            const inputdept = await buildResponse("select", "department", ["title"])
+          role.addRole(...response, ...inputdept);
+          role.viewOne(response[0])
           // console.log(response);
           break;
         case "Add an Employee":
@@ -99,6 +99,8 @@ async function buildResponse(method, table, column) {
         promptArr = await employee.viewManagerNames();
       }else if (table === "role") {
         promptArr = await role.viewTitles();
+      } else if (table === "department") {
+        promptArr = await department.viewTitles();
       }
       const { ans } = await inquirer.prompt([
         {

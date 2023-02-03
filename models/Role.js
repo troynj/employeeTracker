@@ -14,8 +14,6 @@ class Role {
         if (err) {
           reject(err);
         } else {
-          console.log("In Role");
-          // console.log(results.flat(1))
           resolve(results.flat(1));
         }
       });

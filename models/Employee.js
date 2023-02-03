@@ -13,7 +13,6 @@ class Employee {
         if (err) {
           reject(err);
         } else {
-          console.log("In Employee")
           resolve(results.flat(1));
         }
       });

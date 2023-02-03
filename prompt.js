@@ -31,8 +31,7 @@ function mainMenu() {
       var response = "";
       switch (action) {
         case "View All Departments":
-          // department.viewAll();
-          employee.viewNames();
+          department.viewAll();
           break;
         case "View All Roles":
           role.viewAll();
@@ -42,8 +41,8 @@ function mainMenu() {
           break;
         case "Add a Department":
           response = await buildResponse("enter", "department", ["title"]);
-          // console.log("back out", response);
-          // department.addDepartment()
+          console.log("department: ", response);
+          department.addDepartment(response);
           break;
         case "Add a Role":
           response = buildResponse("enter", "role", [
@@ -51,25 +50,26 @@ function mainMenu() {
             "salary",
             "department",
           ]);
-          role.addRole();
+          role.addRole(response);
           // console.log(response);
           break;
         case "Add an Employee":
-          response = builder("enter", "employee", [
+          response = buildResponse("enter", "employee", [
             "first name",
             "last name",
             "role",
             "manager",
           ]);
-          emp.addEmployee();
+          emp.addEmployee(response);
           // console.log(response);
           break;
         case "Update an Employee Role":
           const resName = await buildResponse("select", "employee", ["name"]);
           const resRole = await buildResponse("select", "role", ["title"]);
-
-          // console.log("BACK", resName);
+          const fnArr= resName[0].split(' ')
+          console.log(fnArr[0])
           console.log("BACK", resName, resRole);
+          employee.updateEmployeeRole(resRole, fnArr[0]);
           break;
         default:
           break;
@@ -81,7 +81,9 @@ async function buildResponse(method, table, column) {
   var outputArr = [];
   for (var i = 0; i < column.length; i++) {
     if (method === "enter") {
-      enter(column[i], table);
+      const { ans } = await enter(column[i], table);
+      console.log(ans);
+      outputArr.push(ans);
     } else if (method === "select") {
       var promptArr = [];
       if (table === "employee") {
@@ -101,7 +103,7 @@ async function buildResponse(method, table, column) {
 async function enter(column, table, promptArr) {
   return await inquirer.prompt([
     {
-      name: ans,
+      name: "ans",
       message: `Enter the ${column} of the ${table}`,
     },
   ]);

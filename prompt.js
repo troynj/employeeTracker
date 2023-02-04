@@ -41,7 +41,7 @@ async function mainMenu() {
           break;
         case "Add a Department":
           response = await buildResponse("enter", "department", ["title"]);
-          console.log("department: ", response);
+          // console.log("department: ", response);
           department.addDepartment(response);
           department.viewOne(response)
           break;
@@ -62,19 +62,20 @@ async function mainMenu() {
           const tempRole = await buildResponse("select", "role", ["title"]);
           console.log("abouttoenter");
           const tempMan = await buildResponse("select", "manager", ["name"]);
-          console.log("tn", tempName);
-          console.log("td", tempRole);
-          console.log("tm", tempMan);
+          console.log("tempName", tempName);
+          // console.log("td", tempRole);
+          // console.log("tm", tempMan);
           employee.addEmployee(...tempName, tempRole, tempMan);
-          employee.viewOne(tempName);
+          employee.viewOne(...tempName);
           // console.log(response);
           break;
         case "Update an Employee Role":
           const resName = await buildResponse("select", "employee", ["name"]);
           const resRole = await buildResponse("select", "role", ["title"]);
-          console.log("resRole", resRole);
-          employee.updateEmployeeRole(resRole, resName);
-          employee.viewOne(resName);
+          console.log("resName", resName[0]);
+          employee.updateEmployeeRole(...resRole, resName[0]);
+          var passer = resName[0].split(' ')
+          employee.viewOne(...passer);
           break;
         case "Exit":
           return true;
@@ -95,7 +96,7 @@ async function buildResponse(method, table, column) {
           message: `Enter the ${column[i]} of the ${table}`,
         },
       ]);
-      console.log(ans);
+      // console.log(ans);
       outputArr.push(ans);
     } else if (method === "select") {
       var promptArr = [];
@@ -116,11 +117,11 @@ async function buildResponse(method, table, column) {
           choices: promptArr,
         },
       ]);
-      console.log(ans);
+      // console.log(ans);
       outputArr.push(ans);
     }
   }
-  console.log("outputArr", outputArr);
+  // console.log("outputArr", outputArr);
   return outputArr;
 }
 

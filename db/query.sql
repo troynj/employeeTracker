@@ -38,8 +38,12 @@
 
 -- WHEN I choose to update an employee role
 -- THEN I am prompted to select an employee to update and their new role and this information is updated in the database
-
-SELECT 
-      CONCAT(first_name, ' ', last_Name) 
-      FROM employee 
-      WHERE manager_id IS NULL;
+INSERT INTO employee 
+                                (first_name, last_name, role_id, manager_id)
+                              VALUES 
+                                (?, ?,
+                                (SELECT role.id 
+                                  FROM role WHERE role.title = ?),
+                                (SELECT id 
+                                  FROM  employee
+                                    WHERE CONCAT(first_name, ' ',  last_name) = ?));

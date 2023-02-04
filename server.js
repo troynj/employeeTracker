@@ -1,5 +1,5 @@
 const connection = require("./config/connection");
-const mainMenu = require("./prompt");
+const init = require("./prompt");
 
 
   connection.connect((err) => {
@@ -7,6 +7,6 @@ const mainMenu = require("./prompt");
       return console.error(err);
     }
     console.log(`Connected to the Database.`);
-    mainMenu();
+    init();
   });
 

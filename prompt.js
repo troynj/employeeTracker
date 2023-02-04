@@ -6,6 +6,8 @@ const connection = require("./config/connection");
 const department = new Department(connection);
 const role = new Role(connection);
 const employee = new Employee(connection);
+var fb = true;
+var exit = false;
 
 async function mainMenu() {
   await inquirer
@@ -23,6 +25,7 @@ async function mainMenu() {
           "Add an Employee",
           "Update an Employee Role",
           new inquirer.Separator(),
+          "Toggle Feedback",
           "Exit",
         ],
       },
@@ -31,27 +34,29 @@ async function mainMenu() {
       var response = "";
       switch (action) {
         case "View All Departments":
-          department.viewAll();
+          await department.viewAll();
           break;
         case "View All Roles":
-          role.viewAll();
+          await role.viewAll();
           break;
         case "View All Employees":
-          employee.viewAll();
+          await employee.viewAll();
           break;
         case "Add a Department":
           response = await buildResponse("enter", "department", ["title"]);
           // console.log("department: ", response);
-          department.addDepartment(response);
-          department.viewOne(response)
+          await department.addDepartment(response);
+          // department.viewOne(response)
+          fb && (await feedback("department", response));
           break;
         case "Add a Role":
           response = await buildResponse("enter", "role", ["name", "salary"]);
           const inputdept = await buildResponse("select", "department", [
             "title",
           ]);
-          role.addRole(...response, ...inputdept);
-          role.viewOne(response[0]);
+          await role.addRole(...response, ...inputdept);
+          // role.viewOne(response[0]);
+          fb && (await feedback("role", response[0]));
           // console.log(response);
           break;
         case "Add an Employee":
@@ -60,30 +65,33 @@ async function mainMenu() {
             "last name",
           ]);
           const tempRole = await buildResponse("select", "role", ["title"]);
-          console.log("abouttoenter");
           const tempMan = await buildResponse("select", "manager", ["name"]);
-          console.log("tempName", tempName);
+          // console.log("tempName", tempName);
           // console.log("td", tempRole);
           // console.log("tm", tempMan);
-          employee.addEmployee(...tempName, tempRole, tempMan);
-          employee.viewOne(...tempName);
-          // console.log(response);
+          await employee.addEmployee(...tempName, tempRole, tempMan);
+          // employee.viewOne(...tempName);
+          fb && (await feedback("employee", tempName));
           break;
         case "Update an Employee Role":
           const resName = await buildResponse("select", "employee", ["name"]);
           const resRole = await buildResponse("select", "role", ["title"]);
-          console.log("resName", resName[0]);
-          employee.updateEmployeeRole(...resRole, resName[0]);
-          var passer = resName[0].split(' ')
-          employee.viewOne(...passer);
+          // console.log("resName", resName[0]);
+          await employee.updateEmployeeRole(...resRole, resName[0]);
+          var passer = resName[0].split(" ");
+          // employee.viewOne(...passer);
+          fb && (await feedback("employee", passer));
+          break;
+        case "Toggle Feedback":
+          fb ? (fb = false) : (fb = true);
           break;
         case "Exit":
-          return true;
+          exit = true;
         default:
           break;
       }
     });
-  return false;
+  return exit;
 }
 
 async function buildResponse(method, table, column) {
@@ -125,4 +133,23 @@ async function buildResponse(method, table, column) {
   return outputArr;
 }
 
-module.exports = mainMenu;
+async function feedback(table, data) {
+  if (table === "employee") {
+    await employee.viewOne(...data);
+  } else if (table === "role") {
+    await role.viewOne(data);
+  } else if (table === "department") {
+    await department.viewOne(data);
+  } else console.log("NO CONDITIONS WERE MET FOR FEEDBACK");
+}
+
+async function init() {
+  while (exit == false) {
+    exit = await mainMenu();
+    console.log(exit)
+  }
+  console.log("Goodbye!")
+  process.exit()
+}
+
+module.exports = init;

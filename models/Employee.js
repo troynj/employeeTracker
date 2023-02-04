@@ -20,7 +20,7 @@ class Employee {
   }
 
   async viewManagerNames() {
-    console.log("entered viewManagerNames()");
+    // console.log("entered viewManagerNames()");
     const viewNamesQuery = {
       sql: `SELECT 
       CONCAT(first_name, ' ', last_Name) 
@@ -33,7 +33,7 @@ class Employee {
         if (err) {
           reject(err);
         } else {
-          console.table(results.flat(1));
+          // console.table(results.flat(1));
           resolve(results.flat(1));
         }
       });

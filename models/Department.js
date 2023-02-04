@@ -19,6 +19,27 @@ class Department {
     });
   }
 
+  async viewOne(name) {
+    return new Promise((resolve, reject) => {
+      this.connection.query(
+        `SELECT 
+      name AS "Department Name", 
+      id AS "Department ID" 
+      FROM department
+      WHERE name = ?;`,
+        name,
+        function (err, results) {
+          if (err) {
+            reject(err);
+          } else {
+            console.table(results);
+            resolve(results);
+          }
+        }
+      );
+    });
+  }
+
   async viewAll() {
     return new Promise((resolve, reject) => {
       this.connection.query(
@@ -27,7 +48,7 @@ class Department {
           if (err) {
             reject(err);
           } else {
-            console.table(results)
+            console.table(results);
             resolve(results);
           }
         }

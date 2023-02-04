@@ -2,13 +2,13 @@ const inquirer = require("inquirer");
 const Department = require("./models/Department");
 const Employee = require("./models/Employee");
 const Role = require("./models/Role");
-const connection = require("./connection");
+const connection = require("./config/connection");
 const department = new Department(connection);
 const role = new Role(connection);
 const employee = new Employee(connection);
 
-function mainMenu() {
-  inquirer
+async function mainMenu() {
+  await inquirer
     .prompt([
       {
         type: "list",
@@ -43,40 +43,46 @@ function mainMenu() {
           response = await buildResponse("enter", "department", ["title"]);
           console.log("department: ", response);
           department.addDepartment(response);
+          department.viewOne(response)
           break;
         case "Add a Role":
-          response = await buildResponse("enter", "role", [
-            "name",
-            "salary"]);
-            const inputdept = await buildResponse("select", "department", ["title"])
+          response = await buildResponse("enter", "role", ["name", "salary"]);
+          const inputdept = await buildResponse("select", "department", [
+            "title",
+          ]);
           role.addRole(...response, ...inputdept);
-          role.viewOne(response[0])
+          role.viewOne(response[0]);
           // console.log(response);
           break;
         case "Add an Employee":
           const tempName = await buildResponse("enter", "employee", [
             "first name",
-            "last name",])
-            const tempRole = await buildResponse("select", "role", ["title"])
-            const tempMan = await buildResponse("select", "manager", ["name",
+            "last name",
           ]);
-          console.log("tn", tempName)
-          console.log("td", tempRole)
-          console.log("tm", tempMan)
-          // employee.addEmployee(...tempName, ...tempData);
+          const tempRole = await buildResponse("select", "role", ["title"]);
+          console.log("abouttoenter");
+          const tempMan = await buildResponse("select", "manager", ["name"]);
+          console.log("tn", tempName);
+          console.log("td", tempRole);
+          console.log("tm", tempMan);
+          employee.addEmployee(...tempName, tempRole, tempMan);
+          employee.viewOne(tempName);
           // console.log(response);
           break;
         case "Update an Employee Role":
           const resName = await buildResponse("select", "employee", ["name"]);
           const resRole = await buildResponse("select", "role", ["title"]);
-         console.log("resRole", resRole)
+          console.log("resRole", resRole);
           employee.updateEmployeeRole(resRole, resName);
-          employee.viewOne(resName)
+          employee.viewOne(resName);
           break;
+        case "Exit":
+          return true;
         default:
           break;
       }
     });
+  return false;
 }
 
 async function buildResponse(method, table, column) {
@@ -95,9 +101,9 @@ async function buildResponse(method, table, column) {
       var promptArr = [];
       if (table === "employee") {
         promptArr = await employee.viewEmployeeNames();
-      }  else if (table === "manager"){
+      } else if (table === "manager") {
         promptArr = await employee.viewManagerNames();
-      }else if (table === "role") {
+      } else if (table === "role") {
         promptArr = await role.viewTitles();
       } else if (table === "department") {
         promptArr = await department.viewTitles();
@@ -117,28 +123,5 @@ async function buildResponse(method, table, column) {
   console.log("outputArr", outputArr);
   return outputArr;
 }
-
-// async function enter(column, table, promptArr) {
-//   console.log("Entered")
-//   const resp = await inquirer.prompt([
-//     {
-//       name: "ans",
-//       message: `Enter the ${column} of the ${table}`,
-//     },
-//   ]);
-//   console.log(resp)
-//   return resp
-// }
-
-// async function select(column, table, promptArr) {
-//   return await inquirer.prompt([
-//     {
-//       type: "list",
-//       name: "ans",
-//       message: `Select the ${column} of the ${table}`,
-//       choices: promptArr,
-//     },
-//   ]);
-// }
 
 module.exports = mainMenu;

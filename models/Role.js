@@ -40,7 +40,7 @@ class Role {
             reject(err);
           } else {
             console.table(results);
-            resolve(results);
+            resolve(results.flat(1));
           }
         }
       );

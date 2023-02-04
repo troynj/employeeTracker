@@ -146,7 +146,6 @@ async function feedback(table, data) {
 async function init() {
   while (exit == false) {
     exit = await mainMenu();
-    console.log(exit)
   }
   console.log("Goodbye!")
   process.exit()

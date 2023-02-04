@@ -9,7 +9,8 @@
 
 # **Description**
 
-This application tracks exmployee, role, and department information in a database. Users can view and edit the database
+This application tracks exmployee, role, and department information in a database. Users can view and edit the database. Feedback can be toggled on or off in the main menu.
+Watch this demonstration video : https://drive.google.com/file/d/1U6otjbDXqQKdgAG0tBKRFYx3ZguBJHBJ/view
 
 # **Technology**
 

@@ -1,16 +1,16 @@
 # employeeTracker
 
-# **Table of Contents**
+# *Table of Contents**
+
 1. [Description](#description)
 2. [Technology](#technology)
-5. [Usage](#usage)
-6. [About](#about)
-
+3. [Usage](#usage)
+4. [About](#about)
 
 # **Description**
 
 This application tracks exmployee, role, and department information in a database. Users can view and edit the database. Feedback can be toggled on or off in the main menu.
-Watch this demonstration video : https://drive.google.com/file/d/1U6otjbDXqQKdgAG0tBKRFYx3ZguBJHBJ/view
+<br>Watch this [Demonstration Video](https://drive.google.com/file/d/1U6otjbDXqQKdgAG0tBKRFYx3ZguBJHBJ/view)
 
 # **Technology**
 
@@ -18,9 +18,8 @@ Watch this demonstration video : https://drive.google.com/file/d/1U6otjbDXqQKdgA
 | JavaScript | [https://developer.mozilla.org/en-US/docs/Learn/JavaScript](https://developer.mozilla.org/en-US/docs/Learn/JavaScript) |
 | Node.js | [Node.js](Node.js) |
 
-# **Usage** 
+# **Usage**
 
 to use this application Clone the repository, install dependencies and run script in the terminal
-
 
 Troy Johnson
